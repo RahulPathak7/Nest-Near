@@ -19,15 +19,15 @@ JavaScript
 
 Backend:
 
-Node.js / Express (update if different)
+Node.js / Express 
 
 Database:
 
-MongoDB / MySQL (update if different)
+MongoDB / MySQL 
 
 APIs:
 
-Google Maps API (if used)
+Leaflet.js (for interactive maps and location visualization) 
 🎯 Objective
 
 The main objective of NestNear is to provide a seamless platform where users can easily discover affordable and nearby accommodation options without unnecessary hassle.

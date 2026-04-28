@@ -1,0 +1,23 @@
+<nav class="bg-gray-900 text-white p-4 flex justify-between items-center shadow-md">
+  <div class="flex items-center space-x-6">
+    <a href="/" class="font-bold text-xl">🏠 NestNear</a>
+    <a href="/rooms" class="hover:text-gray-300">Rooms</a>
+    <a href="/rooms/map" class="hover:text-gray-300">Map</a>
+    <a href="/saved" class="hover:text-gray-300">Saved</a>
+
+    <% if (user && user.role === "landlord") { %>
+      <a href="/rooms/add" class="bg-green-500 px-3 py-1 rounded hover:bg-green-600">+ Add Room</a>
+      <a href="/rooms/dashboard" class="hover:text-gray-300">Dashboard</a>
+    <% } %>
+  </div>
+
+  <div>
+    <% if (!user) { %>
+      <a href="/auth/login" class="mr-4">Login</a>
+      <a href="/auth/register">Register</a>
+    <% } else { %>
+      <span class="mr-4">Hi, <%= user.name %></span>
+      <a href="/auth/logout" class="text-red-400">Logout</a>
+    <% } %>
+  </div>
+</nav>

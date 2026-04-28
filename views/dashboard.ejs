@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <div class="bg-white shadow p-4 flex justify-between">
+    <h1 class="text-xl font-bold text-blue-600">NestNear Dashboard</h1>
+    <a href="/rooms/add" class="bg-blue-500 text-white px-4 py-2 rounded">
+      + Add Listing
+    </a>
+  </div>
+
+  <div class="p-6">
+
+    <!-- 🔥 Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+
+      <div class="bg-white p-5 rounded-xl shadow">
+        <h2 class="text-gray-500">Total Listings</h2>
+        <p class="text-2xl font-bold"><%= rooms.length %></p>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow">
+        <h2 class="text-gray-500">Avg Price</h2>
+        <p class="text-2xl font-bold">
+          ₹ <%= rooms.length ? Math.floor(rooms.reduce((a,b)=>a+b.price,0)/rooms.length) : 0 %>
+        </p>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow">
+        <h2 class="text-gray-500">Active</h2>
+        <p class="text-2xl font-bold text-green-500">Live</p>
+      </div>
+
+    </div>
+
+    <!-- 🔥 Listings -->
+    <h2 class="text-xl font-semibold mb-4">Your Listings</h2>
+
+    <% if (rooms.length === 0) { %>
+      <p class="text-gray-500">No listings yet.</p>
+    <% } %>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <% rooms.forEach(room => { %>
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition">
+
+          <!-- Image -->
+          <img 
+            src="<%= room.images[0] || '/default.jpg' %>" 
+            class="h-48 w-full object-cover rounded-t-xl"
+          />
+
+          <!-- Content -->
+          <div class="p-4">
+            <h3 class="font-semibold text-lg"><%= room.title %></h3>
+            <p class="text-gray-500 text-sm"><%= room.address %></p>
+
+            <p class="text-blue-600 font-bold mt-2">₹ <%= room.price %></p>
+
+            <!-- Actions -->
+            <div class="flex justify-between mt-4">
+
+              <a href="/rooms/edit/<%= room._id %>" 
+                 class="text-sm bg-yellow-400 px-3 py-1 rounded">
+                Edit
+              </a>
+
+              <a href="/rooms/delete/<%= room._id %>" 
+                 class="text-sm bg-red-500 text-white px-3 py-1 rounded">
+                Delete
+              </a>
+
+            </div>
+          </div>
+
+        </div>
+      <% }) %>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

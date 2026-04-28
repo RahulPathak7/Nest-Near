@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Room</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+
+  <style>
+    #map {
+      height: 300px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+  <%- include("partials/navbar") %>
+
+  <div class="max-w-3xl mx-auto mt-8 bg-white p-6 rounded-xl shadow">
+
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">
+      ✏️ Edit Room
+    </h2>
+
+    <form action="/rooms/edit/<%= room._id %>" method="POST" enctype="multipart/form-data">
+
+      <!-- Title -->
+      <label class="block font-semibold mb-1">Title</label>
+      <input type="text" name="title" value="<%= room.title %>"
+        class="w-full mb-4 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+
+      <!-- Address -->
+      <label class="block font-semibold mb-1">Address</label>
+      <input type="text" name="address" value="<%= room.address %>"
+        class="w-full mb-4 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+
+      <!-- College -->
+      <label class="block font-semibold mb-1">Nearby College</label>
+      <input type="text" name="college" value="<%= room.college %>"
+        class="w-full mb-4 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+
+      <!-- Price -->
+      <label class="block font-semibold mb-1">Price</label>
+      <input type="number" name="price" value="<%= room.price %>"
+        class="w-full mb-4 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+
+      <!-- Contact -->
+      <label class="block font-semibold mb-1">Contact</label>
+      <input type="text" name="contact" value="<%= room.contact %>"
+        class="w-full mb-4 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+
+      <!-- Existing Images -->
+      <% if (room.images && room.images.length > 0) { %>
+        <label class="block font-semibold mb-2">Current Images</label>
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <% room.images.forEach(img => { %>
+            <img src="<%= img %>" class="h-24 w-full object-cover rounded-lg">
+          <% }) %>
+        </div>
+      <% } %>
+
+      <!-- Upload New Images -->
+      <label class="block font-semibold mb-1">Upload New Images</label>
+      <input type="file" name="images" multiple class="mb-4">
+
+      <!-- MAP -->
+      <label class="block font-semibold mb-2">Update Location</label>
+      <div id="map" class="mb-4"></div>
+
+      <!-- Hidden lat/lng -->
+      <input type="hidden" name="lat" id="lat" value="<%= room.lat %>">
+      <input type="hidden" name="lng" id="lng" value="<%= room.lng %>">
+
+      <!-- Buttons -->
+      <div class="flex justify-between items-center mt-6">
+
+        <a href="/rooms/dashboard"
+           class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+          Cancel
+        </a>
+
+        <button
+          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+          Update Room
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+  <script>
+    const lat = <%= room.lat || 26.1445 %>;
+    const lng = <%= room.lng || 91.7362 %>;
+
+    const map = L.map('map').setView([lat, lng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+      .addTo(map);
+
+    let marker = L.marker([lat, lng]).addTo(map);
+
+    map.on('click', function(e) {
+      const { lat, lng } = e.latlng;
+
+      marker.setLatLng([lat, lng]);
+
+      document.getElementById("lat").value = lat;
+      document.getElementById("lng").value = lng;
+    });
+  </script>
+
+</body>
+</html>
